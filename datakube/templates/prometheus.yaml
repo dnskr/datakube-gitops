@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus
+    targetRevision: 11.15.0
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        server:
+          global:
+            scrape_interval: 30s
+          ingress:
+            enabled: true
+            hosts:
+              - prometheus.minikube
+        alertmanager:
+          enabled: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,61 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: 5.6.10
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        ingress:
+          enabled: true
+          hosts:
+            - grafana.minikube
+        adminUser: admin
+        adminPassword: admin
+        sidecar:
+          dashboards:
+            enabled: true
+            label: grafana_dashboard
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                url: prometheus-server.datakube.svc.cluster.local
+                isDefault: true
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+            - name: 'default'
+              orgId: 1
+              folder: ''
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/default
+        dashboards:
+          # https://grafana.com/dashboards/$gnetId
+          default:
+            prometheus-stats:
+              gnetId: 2
+              revision: 2
+              datasource: Prometheus
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
