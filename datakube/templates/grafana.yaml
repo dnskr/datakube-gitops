@@ -55,6 +55,10 @@ spec:
               gnetId: 2
               revision: 2
               datasource: Prometheus
+            minio-object-storage:
+              gnetId: 12563
+              revision: 5
+              datasource: Prometheus
   syncPolicy:
     automated:
       prune: true

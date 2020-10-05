@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: https://helm.min.io/
+    chart: minio
+    targetRevision: 7.0.2
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        ingress:
+          enabled: true
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: '0'
+          hosts:
+            - minio.minikube
+        persistence:
+          enabled: true
+          size: 5Gi
+        resources:
+          requests:
+            memory: 2Gi
+        environment:
+          MINIO_PROMETHEUS_AUTH_TYPE: public
+        service:
+          annotations:
+            prometheus.io/scrape: 'true'
+            prometheus.io/path: '/minio/prometheus/metrics'
+            prometheus.io/port: '9000'
+        buckets:
+          - name: data
+            policy: none
+            purge: false
+          - name: spark-history
+            policy: none
+            purge: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
