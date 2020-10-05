@@ -1,0 +1,10 @@
+# ArgoCD default values
+
+installCRDs: false
+
+server:
+  extraArgs:
+    - --insecure
+  ingress:
+    enabled: true
+    hosts: [ argocd.minikube ]
