@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spark-operator
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: http://storage.googleapis.com/kubernetes-charts-incubator
+    chart: sparkoperator
+    targetRevision: 0.8.2
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        serviceAccounts:
+          spark:
+            create: true
+            name: spark
+          sparkoperator:
+            create: true
+            name: sparkoperator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
