@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airflow
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: https://kubernetes-charts.storage.googleapis.com
+    chart: airflow
+    targetRevision: 7.11.2
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        airflow:
+          image:
+            repository: apache/airflow
+            tag: 1.10.12-python3.6
+            pullPolicy: IfNotPresent
+          executor: KubernetesExecutor
+          config:
+            AIRFLOW__KUBERNETES__IN_CLUSTER: "True"
+            ## WORKERS
+            AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: "apache/airflow"
+            AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: "1.10.12-python3.6"
+            AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY: "IfNotPresent"
+            AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "True"
+            ## DAGS
+            AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: "30"
+            AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "True"
+            AIRFLOW__CORE__LOAD_EXAMPLES: "True"
+        workers:
+          enabled: false
+        flower:
+          enabled: false
+        redis:
+          enabled: false
+        ingress:
+          enabled: true
+          web:
+            host: airflow.minikube
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
