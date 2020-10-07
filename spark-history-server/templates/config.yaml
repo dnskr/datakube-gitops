@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+data:
+  spark-defaults.conf: |
+    spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem
+    spark.hadoop.fs.s3a.path.style.access=true
+    spark.hadoop.fs.s3a.connection.ssl.enabled=false
+    spark.hadoop.fs.s3a.endpoint={{ .Values.s3.endpoint }}
+    spark.hadoop.fs.s3a.access.key={{ .Values.s3.accesskey }}
+    spark.hadoop.fs.s3a.secret.key={{ .Values.s3.secretkey }}
+    spark.history.fs.logDirectory={{ .Values.s3.logDirectory }}

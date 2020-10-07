@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spark-history-server
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: datakube
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: spark-history-server
+    repoURL: 'https://github.com/dnskr/datakube-gitops.git'
+    targetRevision: master
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        ingress:
+          enabled: true
+          host: spark-history.minikube
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

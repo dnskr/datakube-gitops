@@ -1,0 +1,19 @@
+# Default values for Spark History Server.
+
+replicaCount: 1
+
+image:
+  repository: dnskr/datakube-spark
+  tag: v3.0.0
+  pullPolicy: IfNotPresent
+
+port: 18080
+s3:
+  endpoint: "minio.datakube.svc.cluster.local:9000"
+  accesskey: "YOURACCESSKEY"
+  secretkey: "YOURSECRETKEY"
+  logDirectory: "s3a://spark-history/."
+
+ingress:
+  enabled: false
+  host:
