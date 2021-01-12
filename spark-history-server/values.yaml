@@ -10,8 +10,8 @@ image:
 port: 18080
 s3:
   endpoint: "minio.datakube.svc.cluster.local:9000"
-  accesskey: "YOURACCESSKEY"
-  secretkey: "YOURSECRETKEY"
+  accesskey: "admin"
+  secretkey: "adminadmin"
   logDirectory: "s3a://spark-history/."
 
 ingress:

@@ -73,6 +73,7 @@ $ make datakube-install
 - Check grafana(admin/admin) dashboards http://grafana.minikube
 - Check minio(YOURACCESSKEY/YOURSECRETKEY) http://minio.minikube
 - Check airflow by running example DAGs http://airflow.minikube
+- Check spark-history-server http://spark-history.minikube
 
 ##### Run example spark application
 ```shell script

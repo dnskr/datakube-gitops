@@ -11,9 +11,9 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    repoURL: http://storage.googleapis.com/kubernetes-charts-incubator
-    chart: sparkoperator
-    targetRevision: 0.8.2
+    repoURL: https://googlecloudplatform.github.io/spark-on-k8s-operator
+    chart: spark-operator
+    targetRevision: 1.0.5
     helm:
       valueFiles:
         - values.yaml

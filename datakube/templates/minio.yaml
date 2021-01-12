@@ -13,11 +13,14 @@ spec:
   source:
     repoURL: https://helm.min.io/
     chart: minio
-    targetRevision: 7.0.2
+    targetRevision: 8.0.9
     helm:
+      version: v3
       valueFiles:
         - values.yaml
       values: |
+        accessKey: admin
+        secretKey: adminadmin
         ingress:
           enabled: true
           annotations:

@@ -2,6 +2,11 @@
 
 installCRDs: false
 
+global:
+  image:
+    repository: argoproj/argocd
+    tag: v1.8.2
+
 server:
   extraArgs:
     - --insecure

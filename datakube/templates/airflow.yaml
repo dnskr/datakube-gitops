@@ -11,18 +11,14 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    repoURL: https://kubernetes-charts.storage.googleapis.com
+    repoURL: https://airflow-helm.github.io/charts
     chart: airflow
-    targetRevision: 7.11.2
+    targetRevision: 7.16.0
     helm:
       valueFiles:
         - values.yaml
       values: |
         airflow:
-          image:
-            repository: apache/airflow
-            tag: 1.10.12-python3.6
-            pullPolicy: IfNotPresent
           executor: KubernetesExecutor
           config:
             AIRFLOW__KUBERNETES__IN_CLUSTER: "True"

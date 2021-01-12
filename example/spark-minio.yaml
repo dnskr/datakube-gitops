@@ -14,8 +14,8 @@ spec:
   sparkVersion: "3.0.0"
   hadoopConf:
     "fs.s3a.endpoint": "minio.datakube.svc.cluster.local:9000"
-    "fs.s3a.access.key": "YOURACCESSKEY"
-    "fs.s3a.secret.key": "YOURSECRETKEY"
+    "fs.s3a.access.key": "admin"
+    "fs.s3a.secret.key": "adminadmin"
     "fs.s3a.path.style.access": "true"
     "fs.s3a.connection.ssl.enabled": "false"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"

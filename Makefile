@@ -4,7 +4,7 @@
 argocd-install:
 	@helm repo add argo https://argoproj.github.io/argo-helm
 	@helm repo update
-	helm install argocd argo/argo-cd -f argocd.yaml --wait
+	helm install argocd argo/argo-cd -f argocd.yaml --version 2.11.0 --wait
 	@echo
 	@echo 'ArgoCD login:    admin'
 	@echo 'ArgoCD password:' $$(kubectl get pods -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)
